@@ -2,8 +2,8 @@
   "schema": 1,
   "courseId": 2084,
   "repository": "LearningOS/2026a-rustling-lin-xiz",
-  "commit": "b9229e813aa454cd8be6e8431b2d03c97d682338",
-  "score": 109,
+  "commit": "9c8cf911571b70c103b3a036200a6253e4b6ba78",
+  "score": 110,
   "totalScore": 110,
   "exercises": [
     {
@@ -758,9 +758,9 @@
     {
       "name": "algorithm8",
       "max": 1,
-      "score": 0,
-      "status": "fail",
-      "exitCode": 1
+      "score": 1,
+      "status": "pass",
+      "exitCode": 0
     },
     {
       "name": "algorithm9",
@@ -778,9 +778,9 @@
     }
   ],
   "student": "lin-xiz",
-  "runId": "36387136578",
+  "runId": "36388481914",
   "runAttempt": "1",
   "upload": {
-    "status": "accepted"
+    "status": "pending"
   }
 }
