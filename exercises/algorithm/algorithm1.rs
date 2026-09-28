@@ -2,8 +2,6 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
-
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
 use std::vec::*;
@@ -69,15 +67,39 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+    pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self
+    where
+        T: Ord,
+    {
+        let mut merged = Self::new();
+        let mut a = list_a.start;
+        let mut b = list_b.start;
+
+        while a.is_some() || b.is_some() {
+            let take_a = match (a, b) {
+                (Some(_), None) => true,
+                (None, Some(_)) => false,
+                (Some(a_ptr), Some(b_ptr)) => unsafe {
+                    (*a_ptr.as_ptr()).val <= (*b_ptr.as_ptr()).val
+                },
+                (None, None) => break,
+            };
+
+            let node = if take_a {
+                let ptr = a.take().unwrap();
+                a = unsafe { (*ptr.as_ptr()).next };
+                unsafe { *Box::from_raw(ptr.as_ptr()) }
+            } else {
+                let ptr = b.take().unwrap();
+                b = unsafe { (*ptr.as_ptr()).next };
+                unsafe { *Box::from_raw(ptr.as_ptr()) }
+            };
+
+            merged.add(node.val);
         }
-	}
+
+        merged
+    }
 }
 
 impl<T> Display for LinkedList<T>

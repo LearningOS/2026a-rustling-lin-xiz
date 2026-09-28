@@ -2,8 +2,6 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
-
 use std::cmp::Ord;
 use std::default::Default;
 
@@ -37,7 +35,20 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        self.items.push(value);
+        self.count += 1;
+        let mut index = self.count;
+
+        while index > 1
+            && (self.comparator)(
+                &self.items[index],
+                &self.items[self.parent_idx(index)],
+            )
+        {
+            let parent = self.parent_idx(index);
+            self.items.swap(index, parent);
+            index = parent;
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -57,8 +68,16 @@ where
     }
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
+        let left = self.left_child_idx(idx);
+        let right = self.right_child_idx(idx);
+
+        if right <= self.count
+            && (self.comparator)(&self.items[right], &self.items[left])
+        {
+            right
+        } else {
+            left
+        }
     }
 }
 
@@ -84,8 +103,32 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        if self.count == 0 {
+            return None;
+        }
+
+        let last = self.items.pop().unwrap();
+        self.count -= 1;
+
+        if self.count == 0 {
+            return Some(last);
+        }
+
+        let result = std::mem::replace(&mut self.items[1], last);
+        let mut index = 1;
+
+        while self.children_present(index) {
+            let child = self.smallest_child_idx(index);
+
+            if (self.comparator)(&self.items[child], &self.items[index]) {
+                self.items.swap(index, child);
+                index = child;
+            } else {
+                break;
+            }
+        }
+
+        Some(result)
     }
 }
 
